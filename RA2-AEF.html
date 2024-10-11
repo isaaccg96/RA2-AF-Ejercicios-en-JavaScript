@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 1</title>
+</head>
+<body>
+    <!--
+    1. Gestión de un Carrito de Compras
+        ● Descripción: Implementa un sistema de carrito de compras donde se puedan
+          agregar productos con un nombre, precio y cantidad. El programa debe calcular el
+          total del carrito y mostrar todos los productos en el carrito utilizando funciones.
+        ● Requisitos:
+            ○ Usa var, let, y const para las variables adecuadas.
+            ○ Usa estructuras de control como if-else para verificar si el producto ya
+              está en el carrito.
+            ○ Utiliza un bucle for para mostrar todos los productos y calcular el total.
+        ● Objetivo: Practicar el uso de estructuras, funciones y control de flujo en una
+          situación más cercana a la vida real.
+    -->
+    <script>
+        let carrito = [];
+
+        function agregarProducto(nombre,precio,cantidad){
+            // Comprobar si el producto ya está en el carrito
+            let existe = carrito.some(producto => producto.nombre === nombre);
+
+            if(existe){
+                console.log("Este producto ya está en el carrito")
+            }else{     
+                let producto = {nombre,precio,cantidad};          
+                carrito.push(producto);
+            }
+        }
+
+        function mostrarCarrito(){
+            carrito.forEach(producto => console.log("Producto: " + 
+            producto.nombre + " Precio: " + producto.precio + " Cantidad: " + 
+            producto.cantidad));
+        }
+
+        function calcularTotal(){
+            let total = 0;
+            carrito.forEach(producto => total = total + producto.precio*producto.cantidad);
+            console.log(total);
+        }
+
+        agregarProducto("Silla",20,4);
+        agregarProducto("Mesa",50,1);
+        agregarProducto("Mesa",50,1);
+        mostrarCarrito();
+        calcularTotal();
+    </script>
+
+    <!--
+    2. Conversor de Temperatura
+        ● Descripción: Crea una función que convierta una temperatura dada en grados
+            Celsius a Fahrenheit y viceversa. Usa el parámetro de una función para determinar
+            la dirección de la conversión.
+        ● Requisitos:
+            ○ Usa switch para elegir entre las conversiones.
+            ○ Utiliza typeof para verificar que las entradas sean números.
+            ○ Añade manejo de errores para valores no válidos usando try...catch.
+        ● Objetivo: Trabajar con parámetros, manejo de tipos y estructuras de control.
+    -->
+    <script>
+        function conversor(unidad,cantidad){
+            unidad = unidad.toLowerCase();
+
+            try{
+                if (typeof cantidad !== 'number') {
+                    throw new TypeError("La cantidad debe ser un número");
+                }
+            }catch(error){
+                console.error("Se produjo un error:", error.message);
+            }
+            
+            try{
+                switch(unidad){
+                case "celsius":
+                    let fahrenheit = (cantidad*9/5)+32;
+                    console.log(cantidad + " grados Celsius son: " + fahrenheit + " grados Fahrenheit");
+                    break;
+                case "fahrenheit":
+                    let celsius = (cantidad-32)*5/9;
+                    console.log(cantidad + " grados Fahrenheit son: " + celsius + " grados Celsius");
+                    break;
+                default:
+                    throw new Error("Unidad de temperatura inválida");
+                }
+            }catch(error){
+                console.error("Se produjo un error:", error.message);
+            }          
+        }
+
+        conversor("Celsius",20);
+    </script>
+
+    <!--
+    3. Validación de Formulario
+        ● Descripción: Escribe un programa que valide un formulario básico con nombre,
+          edad y correo electrónico. El nombre debe tener al menos 3 caracteres, la edad
+          debe ser un número mayor a 18, y el correo debe tener un formato válido.
+        ● Requisitos:
+            ○ Usa expresiones regulares para validar el correo.
+            ○ Utiliza funciones y estructuras if-else para validar cada campo.
+            ○ Implementa manejo de errores si los datos no son válidos.
+        ● Objetivo: Aplicar validaciones de entradas y manejo de errores.
+    -->
+    <script>
+        function validarRegex(parametro,valor){
+            switch(parametro){
+                case "nombre":
+                    let regexNombre = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{2,}(\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{2,})*(\s[-']?[A-ZÁÉÍÓÚÑ][a-záéíóúñ]{2,})*$/;
+                    let resultado = regexNombre.test(valor);
+                    return resultado;
+                    break;
+                case "edad":   
+                    let regexEdad = /^(1[9-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-9]|8[0-9]|9[0-9])+$/;
+                    let resultado2 = regexEdad.test(valor);
+                    return resultado2;
+                    break;
+                case "email":
+                    let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    let resultado3 = regexEmail.test(valor);
+                    return resultado3;
+                    break;
+            }        
+        }
+        try{
+            let nombre1 = prompt("Introduzca nombre");
+            if (validarRegex("nombre",nombre1) === false) {
+                throw new Error("Formato de nombre incorrecto");
+            }
+            let edad1 = prompt("Introduzca edad");              
+            if (validarRegex("edad",edad1) === false) {
+                throw new Error("Formato de nombre incorrecto");
+            }
+            let email1 = prompt("Introduzca email");  
+            if (validarRegex("email",email1) === false) {
+                throw new Error("Formato de nombre incorrecto");
+            }
+            alert("Datos introducidos correctamente")
+        }catch(error){
+            console.error("Formato de parametros incorrecto");
+            alert("Datos incorrectos");
+        }
+    </script>
+
+     <!--
+    6. Juego de Piedra, Papel o Tijeras:
+        ● Descripción: Implementa el clásico juego de "Piedra, Papel o Tijeras" donde el
+        usuario juega contra la computadora. Usa prompt para recibir la jugada del usuario
+        y Math.random() para la jugada de la computadora.
+        ● Requisitos:
+            ○ Usa una función switch para determinar el ganador.
+            ○ Controla la lógica de empate, victoria y derrota con una estructura if-else.
+            ○ Añade validaciones para entradas incorrectas.
+        ● Objetivo: Usar funciones, estructuras de control y manejo de entradas aleatorias.
+    -->
+    <script>
+        try{
+            let usuario = prompt("PIEDRA PAPEL O TIJERAS:").toLocaleLowerCase();
+            if(usuario != "piedra" && usuario && "papel" && usuario != "tijeras"){
+                throw new Error("Opcion distinta a las del juego");
+            }
+            let maquina = Math. floor(Math. random()*3) + 1;
+            switch(maquina){
+                case 1: //Piedra
+                    if(usuario === "piedra"){
+                        alert("Empate");
+                    }else if(usuario === "papel"){
+                        alert("Ganaste");
+                    }else{
+                        alert("Perdiste");
+                    }
+                    break;
+                case 2: //Papel
+                    if(usuario === "papel"){
+                        alert("Empate");
+                    }else if(usuario === "tijeras"){
+                        alert("Ganaste");
+                    }else{
+                        alert("Perdiste");
+                    }
+                    break;
+                case 3: //Tijeras
+                    if(usuario === "tijeras"){
+                        alert("Empate");
+                    }else if(usuario === "piedra"){
+                        alert("Ganaste");
+                    }else{
+                        alert("Perdiste");
+                    }  
+                }
+        }catch(error){
+            console.log("Error: Opcion distinta a las del juego" )
+        }
+    </script>
+
+    <!--
+    10. Manejo de Errores Avanzado:
+    ● Descripción: Escribe un programa que simule una calculadora básica con las
+      operaciones de suma, resta, multiplicación y división. El programa debe manejar los
+      siguientes errores:
+        ○ División por cero.
+        ○ Entrada no válida (no es un número).
+        ○ Operación no válida.
+    ● Requisitos:
+        ○ Usa try...catch para manejar los errores.
+        ○ Implementa una estructura if-else o switch para las operaciones.
+        ○ Usa throw para lanzar excepciones personalizadas si se detecta un error.
+    ● Objetivo: Practicar el manejo avanzado de errores y excepciones en un entorno de
+      lógica matemática.
+    -->
+    <script>
+        function calculadora() {
+            try {               
+                let num1 = prompt("Introduzca el primer número: ");
+                let num2 = prompt("Introduzca el segundo número: ");
+        
+                num1 = parseFloat(num1);
+                num2 = parseFloat(num2);
+        
+                if (isNaN(num1) || isNaN(num2)) {
+                    throw new Error("Error: los parámetros ingresados no son números");
+                }
+        
+                let operacion = prompt("Elige la operación: suma, resta, multiplicacion, division").toLowerCase();
+                let resultado;
+                switch(operacion){
+                    case "suma":
+                        resultado = num1 + num2;
+                        break;
+                    case "resta":
+                        resultado = num1 - num2;
+                        break;
+                    case "multiplicacion":
+                        resultado = num1 * num2;
+                        break;
+                    case "division":
+                        if (num2 === 0) {
+                            throw new Error("No existe la división por 0");
+                        }
+                        resultado = num1 / num2;
+                        break;
+                    default:
+                        throw new Error("Operación inválida, elige entre suma, resta, multiplicacion o division.");
+                }
+                alert("El resultado de la " + operacion + " es: " + resultado);
+            }catch(error){
+                alert("Error: " + error.message);
+            }
+        }
+
+        calculadora();
+    </script>
+    
+
+    <!--Ejercicio 1: Simulacion de Lanzamiento de Dados-->
+    <script>
+        function lanzarDado(){
+            let num1 =  Math.floor(Math.random() * 6) + 1; //Uso Math.floor para el redondeo
+            let num2 =  Math.floor(Math.random() * 6) + 1;
+            let suma = num1+num2;
+            return suma;
+        }
+
+        let veces=0;
+        for(let contador = 1; contador<=100; contador++){
+            if(lanzarDado() === 7){
+                veces++;
+            }
+        }
+        console.log(veces);
+    </script>
+
+    <!--Ejercicio 2: Calculo de Promedio y Mediana-->
+    <script>
+        let numeros = [1,2,3,4,5];
+
+        function promedio(arrray){
+            let media = 0;
+            if(numeros.length/2 === 0){
+                
+
+            }else{
+
+            }
+       
+        }
+
+        function media(array){
+            
+        }
+    </script>
+</body>
+</html>
